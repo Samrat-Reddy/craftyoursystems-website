@@ -46,7 +46,7 @@ export function HeroSection() {
       return [W/2 + x * scale * 110, H/2 + ny * scale * 110]
     }
 
-    function drawCube(vs: [number,number,number][], rx: number, ry: number, alpha: number, lw: number) {
+    function drawCube(ctx: CanvasRenderingContext2D, vs: [number,number,number][], rx: number, ry: number, alpha: number, lw: number) {
       ctx.save()
       ctx.globalAlpha = alpha
       ctx.strokeStyle = '#2DD9B4'
@@ -65,7 +65,7 @@ export function HeroSection() {
       ctx.restore()
     }
 
-    function drawConnectors(ov: [number,number,number][], iv: [number,number,number][], rx: number, ry: number) {
+    function drawConnectors(ctx: CanvasRenderingContext2D, ov: [number,number,number][], iv: [number,number,number][], rx: number, ry: number) {
       ctx.save()
       ctx.strokeStyle = 'rgba(45,217,180,0.12)'; ctx.lineWidth = 0.7
       ctx.setLineDash([3, 5])
@@ -78,7 +78,7 @@ export function HeroSection() {
       ctx.restore()
     }
 
-    function drawOrbitDots(t: number) {
+    function drawOrbitDots(ctx: CanvasRenderingContext2D, t: number) {
       const pts = [
         { r: 160, angle: t * 0.3, sz: 1.5 },
         { r: 175, angle: t * 0.3 + 1.2, sz: 1 },
@@ -96,9 +96,9 @@ export function HeroSection() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (prefersReduced) {
-      drawCube(verts, -0.35, 0.5, 0.55, 1.2)
-      drawConnectors(verts, innerVerts, -0.35, 0.5)
-      drawCube(innerVerts, -0.35, 0.9, 0.3, 0.8)
+      drawCube(ctx, verts, -0.35, 0.5, 0.55, 1.2)
+      drawConnectors(ctx, verts, innerVerts, -0.35, 0.5)
+      drawCube(ctx, innerVerts, -0.35, 0.9, 0.3, 0.8)
       return
     }
 
@@ -108,10 +108,10 @@ export function HeroSection() {
       const rx = -0.35 + Math.sin(t * 0.4) * 0.05
       const ry = t
 
-      drawOrbitDots(t)
-      drawCube(verts, rx, ry, 0.55, 1.2)
-      drawConnectors(verts, innerVerts, rx, ry)
-      drawCube(innerVerts, rx, ry + 0.4, 0.3, 0.8)
+      drawOrbitDots(ctx!, t)
+      drawCube(ctx!, verts, rx, ry, 0.55, 1.2)
+      drawConnectors(ctx!, verts, innerVerts, rx, ry)
+      drawCube(ctx!, innerVerts, rx, ry + 0.4, 0.3, 0.8)
 
       ctx!.save()
       ctx!.strokeStyle = 'rgba(45,217,180,0.07)'; ctx!.lineWidth = 1
